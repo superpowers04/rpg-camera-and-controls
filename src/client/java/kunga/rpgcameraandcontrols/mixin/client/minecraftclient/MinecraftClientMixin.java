@@ -103,6 +103,9 @@ public final class MinecraftClientMixin {
 
     @Inject(method = "handleInputEvents", at = @At("HEAD"))
     private void rpg$handleInputEvents(CallbackInfo ci) {
+        while (Keybinds.ENABLED_KEY.wasPressed()) {
+            RpgConfig.enabled=!RpgConfig.enabled;
+        }
         if (!ClientUtil.isRpgThirdPerson(self) || self.player == null) {
             return;
         }
@@ -118,9 +121,6 @@ public final class MinecraftClientMixin {
 
         while (self.options.inventoryKey.wasPressed()) {
             // Remove pressed counts for vanilla code.
-        }
-        while (Keybinds.ENABLED_KEY.wasPressed()) {
-            RpgConfig.enabled=!RpgConfig.enabled;
         }
         while (Keybinds.OPEN_INVENTORY.wasPressed()) {
             if (self.interactionManager.hasRidingInventory()) {
