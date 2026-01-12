@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import kunga.rpgcameraandcontrols.config.RpgConfig;
 import kunga.rpgcameraandcontrols.camera.RpgCamera;
 import kunga.rpgcameraandcontrols.util.ClientUtil;
 import net.minecraft.client.MinecraftClient;
@@ -19,6 +20,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
+
 
 @Mixin(Camera.class)
 public final class CameraMixin {
@@ -35,13 +37,13 @@ public final class CameraMixin {
 
     @Inject(method = "update", at = @At("TAIL"))
     private void rpg$update(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inversiveView, float tickProgress, CallbackInfo ci) {
-        var client = MinecraftClient.getInstance();
-        if (!ClientUtil.isIngame(client) || !ClientUtil.isRpgThirdPerson(client))
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (!ClientUtil.isRpgThirdPerson(client))
             return;
 
         RpgCamera.ensureDefaultCameraPosition();
 
-        if (!RpgCamera.isOrbiting()) {
+        if (!RpgCamera.isOrbiting() && RpgConfig.AUTO_CENTER) {
             var moving = focusedEntity.getVelocity().horizontalLengthSquared() > 0.0001;
 
             var yawNowDeg = focusedEntity.getYaw(tickProgress);
@@ -55,9 +57,11 @@ public final class CameraMixin {
             }
         }
 
-        final double targetX = MathHelper.lerp(tickProgress, focusedEntity.lastX, focusedEntity.getX());
-        final double targetY = MathHelper.lerp(tickProgress, focusedEntity.lastY, focusedEntity.getY()) + focusedEntity.getStandingEyeHeight() * 0.8;
-        final double targetZ = MathHelper.lerp(tickProgress, focusedEntity.lastZ, focusedEntity.getZ());
+        Vec3d from = new Vec3d(
+	        MathHelper.lerp(tickProgress, focusedEntity.lastX, focusedEntity.getX()),
+	        MathHelper.lerp(tickProgress, focusedEntity.lastY, focusedEntity.getY()) + focusedEntity.getStandingEyeHeight() * 0.8,
+	        MathHelper.lerp(tickProgress, focusedEntity.lastZ, focusedEntity.getZ())
+	    );
 
         float camYawDeg = (float) Math.toDegrees(RpgCamera.getOrbitYawRadians());
         float camPitchDeg = (float) Math.toDegrees(RpgCamera.getOrbitPitchRadians());
@@ -70,11 +74,10 @@ public final class CameraMixin {
         final double radius = RpgCamera.getRadiusForFrame();
         Vector3f fwd = self.getHorizontalPlane();
         Vec3d desired = new Vec3d(
-                targetX - fwd.x * radius,
-                targetY - fwd.y * radius,
-                targetZ - fwd.z * radius);
+                from.x - fwd.x * radius,
+                from.y - fwd.y * radius,
+                from.z - fwd.z * radius);
 
-        Vec3d from = new Vec3d(targetX, targetY, targetZ);
 
         if (client.world != null) {
             RaycastContext ctx = new RaycastContext(

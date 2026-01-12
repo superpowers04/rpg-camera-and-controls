@@ -18,11 +18,8 @@ public final class BipedEntityModelMixin {
 
     @Inject(method = "setAngles", at = @At("TAIL"))
     private void rpg$turnHeadToTurnDirection(BipedEntityRenderState state, CallbackInfo ci) {
-        var client = MinecraftClient.getInstance();
-        if (client == null || client.player == null) return;
-
-        boolean ingame = client.currentScreen == null && !client.player.isSpectator();
-        if (!ingame || !ClientUtil.isRpgThirdPerson(client) || !ClientUtil.isLocalPlayer(client.player, state)) return;
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client == null || !ClientUtil.isRpgThirdPerson(client) || !ClientUtil.isLocalPlayer(client.player, state)) return;
 
         self.head.pitch = 0;
         self.head.roll = 0;

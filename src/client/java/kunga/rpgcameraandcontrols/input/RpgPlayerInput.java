@@ -2,6 +2,7 @@ package kunga.rpgcameraandcontrols.input;
 
 import net.minecraft.util.PlayerInput;
 import net.minecraft.util.math.Vec2f;
+import kunga.rpgcameraandcontrols.config.RpgConfig;
 
 public final class RpgPlayerInput {
     public static final double TURN_SPEED_IN_DEGREE_PER_SEC = 180;
@@ -10,8 +11,7 @@ public final class RpgPlayerInput {
     private static boolean currentTurnLeft = false;
     private static boolean currentTurnRight = false;
 
-    private RpgPlayerInput() {
-    }
+    private RpgPlayerInput() {}
 
     public static void setMovement(
         boolean forward,
@@ -40,8 +40,8 @@ public final class RpgPlayerInput {
     }
 
     public static double getTurnSpeedInDegreesPerSecond() {
-        var turnDirection = (currentTurnLeft ? -1 : 0) + (currentTurnRight ? 1 : 0);
-        var speed = TURN_SPEED_IN_DEGREE_PER_SEC;
+        int turnDirection = (currentTurnLeft ? -1 : 0) + (currentTurnRight ? 1 : 0);
+        double speed = RpgConfig.instance.TURN_SPEED_PER_SEC;
         if (playerInput.sprint()) speed *= 1.2;
         if (playerInput.sneak()) speed *= 0.6;
 

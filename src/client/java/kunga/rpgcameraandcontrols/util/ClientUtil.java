@@ -1,5 +1,6 @@
 package kunga.rpgcameraandcontrols.util;
 
+import kunga.rpgcameraandcontrols.config.RpgConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.Perspective;
@@ -12,7 +13,7 @@ public final class ClientUtil {
     }
 
     public static boolean isRpgThirdPerson(MinecraftClient client) {
-        return client.options.getPerspective() == Perspective.THIRD_PERSON_BACK;
+        return isIngame(client) && client.options.getPerspective() == RpgConfig.PERSPECTIVE;
     }
 
     public static boolean isLocalPlayer(ClientPlayerEntity player, BipedEntityRenderState state) {

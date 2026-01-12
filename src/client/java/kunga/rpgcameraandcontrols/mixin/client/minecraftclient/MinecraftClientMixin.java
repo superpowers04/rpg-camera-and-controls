@@ -1,6 +1,7 @@
 package kunga.rpgcameraandcontrols.mixin.client.minecraftclient;
 
 import kunga.rpgcameraandcontrols.camera.RpgCamera;
+import kunga.rpgcameraandcontrols.config.RpgConfig;
 import kunga.rpgcameraandcontrols.input.Keybinds;
 import kunga.rpgcameraandcontrols.input.RpgPlayerInput;
 import kunga.rpgcameraandcontrols.input.UseKeyInput;
@@ -49,11 +50,9 @@ public final class MinecraftClientMixin {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void rpg$render(boolean tick, CallbackInfo ci) {
-        boolean isInRpgMode = ClientUtil.isIngame(self) && ClientUtil.isRpgThirdPerson(self);
-        if (wasInRpgPerspective && !isInRpgMode) {
-            if (self.currentScreen == null) {
-                self.mouse.lockCursor();
-            }
+        boolean isInRpgMode = ClientUtil.isRpgThirdPerson(self);
+        if (wasInRpgPerspective && !isInRpgMode && self.currentScreen == null) {
+            self.mouse.lockCursor();
         }
         wasInRpgPerspective = isInRpgMode;
 
@@ -66,24 +65,22 @@ public final class MinecraftClientMixin {
             self.mouse.unlockCursor();
         }
 
-        var now = GlfwUtil.getTime();
-        var deltaTime = (lastRenderTime == Double.MIN_VALUE) ? 0.0 : (now - lastRenderTime);
+        double now = GlfwUtil.getTime();
+        double deltaTime = (lastRenderTime == Double.MIN_VALUE) ? 0.0 : (now - lastRenderTime);
         lastRenderTime = now;
 
-        if (deltaTime <= 0.0 || deltaTime > 0.5)
+        if (deltaTime <= 0.0 || deltaTime >= 1.0)
             return;
 
         PlayerHead.update(deltaTime);
         RpgCamera.applyScrollZoom(self.player);
         RpgCamera.updateZoom(self.player, deltaTime);
 
-        var turnSpeedInDegreePerSecond = RpgPlayerInput.getTurnSpeedInDegreesPerSecond();
+        double turnSpeedInDegreePerSecond = RpgPlayerInput.getTurnSpeedInDegreesPerSecond();
         if (turnSpeedInDegreePerSecond == 0)
             return;
 
-        var yawDelta = (float) (turnSpeedInDegreePerSecond * deltaTime);
-
-        self.player.setYaw(self.player.getYaw() + yawDelta);
+        self.player.setYaw(self.player.getYaw() + (float) (turnSpeedInDegreePerSecond * deltaTime));
     }
 
     @Inject(method = "tick", at = @At("TAIL"))

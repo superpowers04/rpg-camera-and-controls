@@ -6,5 +6,9 @@
   "key.rpg-camera.strafe_right": "Strafe Right",
   "key.rpg-camera.drop_item": "Drop Item",
   "key.rpg-camera.open_inventory": "Open Inventory",
-  "key.rpg-camera.toggle_zoom": "Toggle Zoom"
+  "key.rpg-camera.toggle_zoom": "Toggle Zoom",
+  "text.autoconfig.rpg-camera.option.TURN_SPEED_PER_SEC": "Turn speed per second(In Degrees)",
+  "text.autoconfig.rpg-camera.option.SMOOTHING_SPEED": "Smoothing Speed",
+  "text.autoconfig.rpg-camera.option.PERSPECTIVE": "Perspective to replace",
+  "text.autoconfig.rpg-camera.option.AUTO_CENTER": "Auto center when moving",
 }
