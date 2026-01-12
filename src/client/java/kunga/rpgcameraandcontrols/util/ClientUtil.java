@@ -13,7 +13,7 @@ public final class ClientUtil {
     }
 
     public static boolean isRpgThirdPerson(MinecraftClient client) {
-        return isIngame(client) && client.options.getPerspective() == RpgConfig.PERSPECTIVE;
+        return isIngame(client) && RpgConfig.enabled && client.options.getPerspective() == Perspective.THIRD_PERSON_BACK;
     }
 
     public static boolean isLocalPlayer(ClientPlayerEntity player, BipedEntityRenderState state) {

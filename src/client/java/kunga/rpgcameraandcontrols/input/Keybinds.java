@@ -19,6 +19,7 @@ public final class Keybinds {
     public static KeyBinding DROP_ITEM;
     public static KeyBinding OPEN_INVENTORY;
     public static KeyBinding TOGGLE_ZOOM_KEY;
+    public static KeyBinding ENABLED_KEY;
 
     public static void register() {
         TURN_LEFT_KEY = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -67,6 +68,13 @@ public final class Keybinds {
             "key.rpg-camera.toggle_zoom",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_LEFT_ALT,
+            CATEGORY_RPG_CAMERA_AND_CONTROLS
+        ));
+
+        ENABLED_KEY = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "key.rpg-camera.enabled",
+            InputUtil.Type.KEYSYM,
+            GLFW.GLFW_KEY_RIGHT_ALT,
             CATEGORY_RPG_CAMERA_AND_CONTROLS
         ));
     }

@@ -43,7 +43,7 @@ public final class CameraMixin {
 
         RpgCamera.ensureDefaultCameraPosition();
 
-        if (!RpgCamera.isOrbiting() && RpgConfig.AUTO_CENTER) {
+        if (!RpgCamera.isOrbiting() && RpgConfig.auto_center) {
             var moving = focusedEntity.getVelocity().horizontalLengthSquared() > 0.0001;
 
             var yawNowDeg = focusedEntity.getYaw(tickProgress);

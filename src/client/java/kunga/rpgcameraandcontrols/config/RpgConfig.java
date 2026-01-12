@@ -9,11 +9,12 @@ import net.minecraft.client.option.Perspective;
 
 @Config(name = "rpg-camera")
 public class RpgConfig implements ConfigData {
+    public static boolean enabled = true;
 	@ConfigEntry.BoundedDiscrete(max=9999)
-    public static double TURN_SPEED_PER_SEC = 180;
+    public static double turn_speed_per_sec = 180;
 	@ConfigEntry.BoundedDiscrete(min=0,max=10)
-    public static double SMOOTHING_SPEED = 10.0;
-    public static boolean AUTO_CENTER = true;
-    public static Perspective PERSPECTIVE = Perspective.THIRD_PERSON_BACK;
+    public static double smoothing_speed = 10.0;
+    public static boolean auto_center = true;
+    // public static Perspective perspective = Perspective.THIRD_PERSON_BACK;
 
 }

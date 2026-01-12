@@ -41,7 +41,7 @@ public final class RpgPlayerInput {
 
     public static double getTurnSpeedInDegreesPerSecond() {
         int turnDirection = (currentTurnLeft ? -1 : 0) + (currentTurnRight ? 1 : 0);
-        double speed = RpgConfig.TURN_SPEED_PER_SEC;
+        double speed = RpgConfig.turn_speed_per_sec;
         if (playerInput.sprint()) speed *= 1.2;
         if (playerInput.sneak()) speed *= 0.6;
 

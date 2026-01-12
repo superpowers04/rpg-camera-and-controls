@@ -119,6 +119,9 @@ public final class MinecraftClientMixin {
         while (self.options.inventoryKey.wasPressed()) {
             // Remove pressed counts for vanilla code.
         }
+        while (Keybinds.ENABLED_KEY.wasPressed()) {
+            RpgConfig.enabled=!RpgConfig.enabled;
+        }
         while (Keybinds.OPEN_INVENTORY.wasPressed()) {
             if (self.interactionManager.hasRidingInventory()) {
                 this.player.openRidingInventory();
